@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ObserverRecyclerViewApp</string>
+    <string name="btn_add">Add</string>
+    <string name="btn_remove">Remove</string>
+    <string name="tv_sum">Sum:</string>
+    <string name="uah">UAH</string>
+</resources>
