@@ -2,11 +2,7 @@ package dudukov.andrey.observerrecyclerviewapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,8 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         fruitsList.addAll(getFruitList())
+        adapter.replace(fruitsList)
         recyclerList.adapter = adapter
-        adapter.swap(fruitsList)
         btnAdd.setOnClickListener { adapter.addItem(getRandomFruit()) }
         btnRemove.setOnClickListener{ adapter.removeItem(getRandomFruitForRemove()) }
         calculateCost()
@@ -33,13 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun calculateCost(){
         val allCost = fruitsList.sumBy { it.price }
-        val sum = StringBuilder()
-        sum.append(getString(R.string.tv_sum))
-        sum.append(" ")
-        sum.append(allCost)
-        sum.append(" ")
-        sum.append(getString(R.string.uah))
-        tvSum.text = sum
+        tvSum.text = getString(R.string.tv_sum, allCost)
     }
     private fun getFruitList(): MutableList<Fruit> {
         return mutableListOf(

@@ -18,27 +18,18 @@ class FruitAdapter(val adapterOnDataChanged : (Fruit, State) -> Unit): BaseAdapt
     override fun onBindViewHolder(holder: BaseViewHolder<Fruit>, position: Int) {
         holder.bind(items[position])
     }
-    override fun swap(newItems: List<Fruit>) {
-        items.clear()
-        items.addAll(newItems)
-        notifyDataSetChanged()
-    }
     override fun addItem(item: Fruit) {
-        items.add(item)
-        notifyDataSetChanged()
+        super.addItem(item)
         adapterOnDataChanged(item, State.Added)
     }
     override fun removeItem(item: Fruit) {
-        val index = items.indexOf(item)
-        items.remove(item)
-        notifyItemRemoved(index)
+        super.removeItem(item)
         adapterOnDataChanged(item, State.Removed)
     }
     private class FruitViewHolder(itemView: View): BaseViewHolder<Fruit>(itemView) {
-        override fun bind(f: Fruit) {
-            itemView.tvName.text = f.name
-            itemView.tvPrice.text = f.price.toString()
+        override fun bind(fruit: Fruit) {
+            itemView.tvName.text = fruit.name
+            itemView.tvPrice.text = fruit.price.toString()
         }
-
     }
 }

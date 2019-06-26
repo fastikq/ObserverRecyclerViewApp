@@ -8,13 +8,24 @@ abstract class BaseAdapter<M, VH: BaseAdapter.BaseViewHolder<M>>: RecyclerView.A
 
     protected val items: MutableList<M> = mutableListOf()
     abstract class BaseViewHolder<M>(itemView: View) : RecyclerView.ViewHolder(itemView){
-        abstract fun bind(f: M)
+        abstract fun bind(fruit: M)
     }
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
-    abstract override fun getItemCount(): Int
     abstract override fun onBindViewHolder(holder: VH, position: Int)
-    abstract fun swap(newItems: List<M>)
-    abstract fun addItem(item: M)
-    abstract fun removeItem(item: M)
+    override fun getItemCount() = items.size
+    open fun replace(newItems: List<M>){
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+    open fun addItem(item: M){
+        items.add(item)
+        notifyItemInserted(items.size - 1)
+    }
+    open fun removeItem(item: M){
+        val index = items.indexOf(item)
+        items.remove(item)
+        notifyItemRemoved(index)
+    }
 
 }
