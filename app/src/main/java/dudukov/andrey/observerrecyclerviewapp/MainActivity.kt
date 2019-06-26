@@ -56,11 +56,11 @@ class MainActivity : AppCompatActivity() {
         )
     }
     private fun getRandomFruit() : Fruit{
-        val randomIndex = (0 until 9).random()
+        val randomIndex = (0 until getFruitList().size).random()
         return getFruitList()[randomIndex]
     }
     private fun getRandomFruitForRemove() : Fruit{
-        val randomIndex = if(fruitsList.size > 1) (0 until fruitsList.size - 1).random() else 0
+        val randomIndex = if(fruitsList.size > 1) (0 until fruitsList.size).random() else 0
         return fruitsList[randomIndex]
     }
 }
