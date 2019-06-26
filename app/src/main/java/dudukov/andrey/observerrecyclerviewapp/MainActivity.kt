@@ -11,7 +11,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private val fruitsList: MutableList<Fruit> = mutableListOf()
-    private val adapter: FruitAdapter by lazy { FruitAdapter{ item, action -> adapterCallBack(item, action)} }
+    private val adapter: FruitAdapter by lazy { FruitAdapter{ item, state -> adapterCallBack(item, state)} }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +23,10 @@ class MainActivity : AppCompatActivity() {
         btnRemove.setOnClickListener{ adapter.removeItem(getRandomFruitForRemove()) }
         calculateCost()
     }
-    private fun adapterCallBack(item: Fruit, action: Action) {
-        when(action){
-            Action.ADDED -> fruitsList.add(item)
-            Action.REMOVED -> fruitsList.remove(item)
+    private fun adapterCallBack(item: Fruit, state: State) {
+        when(state){
+            is State.Added -> fruitsList.add(item)
+            is State.Removed -> fruitsList.remove(item)
         }
         btnRemove.isEnabled = fruitsList.size != 0
         calculateCost()

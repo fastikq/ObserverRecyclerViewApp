@@ -4,24 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
+import kotlinx.android.synthetic.main.item_recycler.view.*
 
-class FruitAdapter(val adapterOnDataChanged : (Fruit, Action) -> Unit): BaseAdapter<Fruit, BaseAdapter.BaseViewHolder>() {
+class FruitAdapter(val adapterOnDataChanged : (Fruit, State) -> Unit): BaseAdapter<Fruit, BaseAdapter.BaseViewHolder<Fruit>>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Fruit> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recycler, parent, false)
         return FruitViewHolder(view)
     }
     override fun getItemCount(): Int {
         return items.size
     }
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        val currentItem = items[position]
-        if(holder is FruitViewHolder) {
-            holder.apply {
-                tvName.text = currentItem.name
-                tvPrice.text = currentItem.price.toString()
-            }
-        }
+    override fun onBindViewHolder(holder: BaseViewHolder<Fruit>, position: Int) {
+        holder.bind(items[position])
     }
     override fun swap(newItems: List<Fruit>) {
         items.clear()
@@ -31,16 +26,19 @@ class FruitAdapter(val adapterOnDataChanged : (Fruit, Action) -> Unit): BaseAdap
     override fun addItem(item: Fruit) {
         items.add(item)
         notifyDataSetChanged()
-        adapterOnDataChanged(item, Action.ADDED)
+        adapterOnDataChanged(item, State.Added)
     }
     override fun removeItem(item: Fruit) {
         val index = items.indexOf(item)
         items.remove(item)
         notifyItemRemoved(index)
-        adapterOnDataChanged(item, Action.REMOVED)
+        adapterOnDataChanged(item, State.Removed)
     }
-    private class FruitViewHolder(itemView: View): BaseViewHolder(itemView) {
-        val tvName: AppCompatTextView = itemView.findViewById(R.id.tvName)
-        val tvPrice: AppCompatTextView = itemView.findViewById(R.id.tvPrice)
+    private class FruitViewHolder(itemView: View): BaseViewHolder<Fruit>(itemView) {
+        override fun bind(f: Fruit) {
+            itemView.tvName.text = f.name
+            itemView.tvPrice.text = f.price.toString()
+        }
+
     }
 }
